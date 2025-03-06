@@ -40,6 +40,10 @@ app.use(notFound);
 // Error Handler
 app.use(errorHandler);
 
+console.log('Starting server...');
+console.log('DB_URI:', process.env.DB_URI);
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+console.log('PORT:', process.env.PORT);
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
