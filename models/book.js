@@ -23,5 +23,16 @@ const Book = mongoose.models.Book || mongoose.model('Book', new mongoose.Schema(
 
 module.exports = Book;
 
+console.log('Nigga work pls!');
+
+
+
+
+
+
+
+
+
+
 
 
