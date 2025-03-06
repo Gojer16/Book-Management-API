@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth.routes');
 const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
+require('dotenv').config({ path: './.env' });
 
 
 dotenv.config() // load .env variables
@@ -19,6 +20,8 @@ const app = express()
 //middleware
 app.use(cors()) // CORS headers
 app.use(express.json()) // body parser
+
+console.log("DB_URI:", process.env.DB_URI); // Debugging line
 
 
 // connect to MongoDB
@@ -41,6 +44,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 console.log(Book);
+console.log("MONGO_URI:", process.env.MONGO_URI);
 
 console.log('Starting server...');
 console.log('DB_URI:', process.env.DB_URI);
