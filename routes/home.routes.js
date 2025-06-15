@@ -6,3 +6,5 @@ router.get(
     '/',
     homeController.grettings
 );
+
+module.exports = router;
