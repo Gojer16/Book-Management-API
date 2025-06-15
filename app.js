@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const database = require('./config/db')
 const bookRoutes = require('./routes/book.routes');
 const authRoutes = require('./routes/auth.routes');
+const homeRoute = require(`./routes/home.routes`)
 const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
@@ -33,6 +34,7 @@ database(process.env.DB_URI)
 //routes
 
 //route for book
+app.use('/', homeRoute)
 app.use('/api/auth', authRoutes);
 app.use('/api/books', authMiddleware, bookRoutes);
 
