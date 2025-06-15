@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Check if the model already exists
 const Book = mongoose.models.Book || mongoose.model('Book', new mongoose.Schema({
   title: {
     type: String,
@@ -10,20 +9,27 @@ const Book = mongoose.models.Book || mongoose.model('Book', new mongoose.Schema(
   },
   author: {
     type: String,
-    required: [true, 'Author is required'],
     trim: true
   },
-  publishedYear: {
+  publicationYear: {
     type: Number,
-    required: [true, 'Published year is required'],
     min: [1000, 'Year must be after 1000'],
     max: [new Date().getFullYear(), 'Year cannot be in the future']
+  },
+  genre: {
+    type: String,
+    trim: true,
+    maxlength: [100, 'Genre cannot exceed 100 characters']
+  },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: [1000, 'Description cannot exceed 1000 characters']
   }
 }, { timestamps: true }));
 
 module.exports = Book;
 
-console.log('Nigga work pls!');
 
 
 
