@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const registerSchema = Joi.object({
   email: Joi.string()
@@ -43,23 +43,22 @@ const loginSchema = Joi.object({
 
 //Books schemas
 const createBookSchema = Joi.object({
-  title: Joi.string().min(1).max(255).required().messages({
+  title: Joi.string().min(1).max(255)
+  .required()
+  .messages({
     'string.min': 'Title must not be empty.',
     'string.max': 'Title cannot exceed 255 characters.',
     'any.required': 'Title is required.'
   }),
-  author: Joi.string().min(1).max(255).required().messages({
+  author: Joi.string().min(1).max(255)
+  .optional()
+  .messages({
     'string.min': 'Author must not be empty.',
     'string.max': 'Author cannot exceed 255 characters.',
     'any.required': 'Author is required.'
   }),
-  isbn: Joi.string().pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/).required().messages({ 
-    'string.pattern.base': 'ISBN must be a valid 13-digit ISBN (e.g., 978-3-16-148410-0).',
-    'string.empty': 'ISBN cannot be empty.',
-    'any.required': 'ISBN is required.'
-  }),
   publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5) 
-    .required()
+    .optional()
     .messages({
       'number.base': 'Publication year must be a number.',
       'number.integer': 'Publication year must be an integer.',
@@ -67,52 +66,71 @@ const createBookSchema = Joi.object({
       'number.max': `Publication year cannot be after ${new Date().getFullYear() + 5}.`,
       'any.required': 'Publication year is required.'
     }),
-  genre: Joi.string().min(1).max(100).optional().messages({
+  genre: Joi.string().min(1).max(100)
+  .optional()
+  .messages({
     'string.min': 'Genre must not be empty if provided.',
     'string.max': 'Genre cannot exceed 100 characters.'
   }),
-  description: Joi.string().max(1000).optional().messages({
+  description: Joi.string().max(1000)
+  .optional()
+  .messages({
     'string.max': 'Description cannot exceed 1000 characters.'
   }),
 });
 
 const updateBookSchema = Joi.object({
-  title: Joi.string().min(1).max(255).optional().messages({
+  title: Joi.string().min(1).max(255)
+  .optional()
+  .messages({
     'string.min': 'Title must not be empty.',
     'string.max': 'Title cannot exceed 255 characters.'
   }),
-  author: Joi.string().min(1).max(255).optional().messages({
+  author: Joi.string().min(1).max(255)
+  .optional()
+  .messages({
     'string.min': 'Author must not be empty.',
     'string.max': 'Author cannot exceed 255 characters.'
   }),
-  isbn: Joi.string().pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/).optional().messages({
+  isbn: Joi.string().pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/)
+  .optional()
+  .messages({
     'string.pattern.base': 'ISBN must be a valid 13-digit ISBN (e.g., 978-3-16-148410-0).'
   }),
-  publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5).optional().messages({
+  publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5)
+  .optional()
+  .messages({
     'number.base': 'Publication year must be a number.',
     'number.integer': 'Publication year must be an integer.',
     'number.min': 'Publication year cannot be before 1000.',
     'number.max': `Publication year cannot be after ${new Date().getFullYear() + 5}.`
   }),
-  genre: Joi.string().min(1).max(100).optional().messages({
+  genre: Joi.string().min(1).max(100)
+  .optional()
+  .messages({
     'string.min': 'Genre must not be empty if provided.',
     'string.max': 'Genre cannot exceed 100 characters.'
   }),
-  description: Joi.string().max(1000).optional().messages({
+  description: Joi.string().max(1000)
+  .optional()
+  .messages({
     'string.max': 'Description cannot exceed 1000 characters.'
   }),
 });
 
 
-const idSchema = Joi.string().custom((value, helpers) => {
-  if (!mongoose.Types.ObjectId.isValid(value)) {
-    return helpers.error('any.invalid');
-  }
-  return value;
-}).messages({
-  'any.invalid': 'Invalid ID format.'
-});
+const idSchema = Joi.object({ 
+  id: Joi.string().custom((value, helpers) => { 
+    const ObjectId = mongoose.Types.ObjectId;
 
+    if (!ObjectId || !ObjectId.isValid(value)) {
+        return helpers.error('any.invalid'); 
+    }
+    return value;
+  }).messages({
+    'any.invalid': 'Invalid ID format.'
+  }).required() 
+});
 
 /**
  * Creates a middleware function to validate request data against a Joi schema.
@@ -121,15 +139,15 @@ const idSchema = Joi.string().custom((value, helpers) => {
  * @returns {Function} Express middleware function.
  */
 const validate = (schema, property) => (req, res, next) => {
-  const { error } = schema.validate(req[property], { abortEarly: false });
-  if (error) {
-    const validationError = new Error('Validation Error');
-    validationError.statusCode = 400; 
-    validationError.isJoi = true; 
-    validationError.details = error.details; 
-    return next(validationError);
-  }
-  next();
+    const { error } = schema.validate(req[property], { abortEarly: false });
+    if (error) {
+        const validationError = new Error('Validation Error');
+        validationError.statusCode = 400;
+        validationError.isJoi = true;
+        validationError.details = error.details;
+        return next(validationError);
+    }
+    next();
 };
 
 module.exports = {
