@@ -2,24 +2,24 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {
   definition: {
-    openapi: '3.0.0', // Specify the OpenAPI version
+    openapi: '3.0.0', 
     info: {
-      title: 'Book Management API', // Your API's title
-      version: '1.0.0', // Your API's version
-      description: 'A simple CRUD API for managing books and user authentication.', // A brief description
+      title: 'Book Management API', 
+      version: '1.0.0',
+      description: 'A simple CRUD API for managing books and user authentication.',
       contact: {
-        name: 'Orlando Ascanio', // Your name or team name
-        url: 'https://www.linkedin.com/in/orlando-ascanio-dev', // Your LinkedIn or website
-        email: 'operation927@gmail.com', // Your email
+        name: 'Orlando Ascanio',
+        url: 'https://www.linkedin.com/in/orlando-ascanio-dev',
+        email: 'operation927@gmail.com', 
       },
     },
     servers: [
       {
-        url: 'http://localhost:4000/api', // Make sure this matches your app.use('/api', ...) base path
+        url: 'http://localhost:4000/', 
         description: 'Development Server',
       },
       {
-        url: 'https://back-end-api-34k5.onrender.com/api', // IMPORTANT: Replace with your deployed Render URL's base API path
+        url: 'https://back-end-api-34k5.onrender.com/', 
         description: 'Production Server',
       },
     ],
@@ -211,8 +211,6 @@ const options = {
   // Paths to files containing OpenAPI documentation comments
   apis: [
     './routes/*.js', // Look for comments in your route files
-    // If you define schemas by commenting on models, you might add:
-    // './models/*.js',
   ],
 };
 
