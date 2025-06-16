@@ -72,7 +72,7 @@ Follow these steps to get a copy of the project up and running locally.
 ### 🔧 Installation
 
 ```bash
-git clone https://github.com/YourGitHubUsername/your-repo-name.git
+git clone https://github.com/Gojer16/Book-Management-API.git
 cd Book-Management-API
 npm install
 ```
@@ -128,7 +128,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
 Orlando Ascanio
 📧 operation927@gmail.com
-🔗 LinkedIn
-🔗 Project Link
+🔗 LinkedIn(https://www.linkedin.com/in/orlando-ascanio-dev)
+🔗 Project Link (https://github.com/Gojer16/Book-Management-API)
 
 
