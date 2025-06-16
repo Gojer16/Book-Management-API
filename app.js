@@ -4,6 +4,8 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const helmet = require('helmet')
 const database = require('./config/db')
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger.config')
 const bookRoutes = require('./routes/book.routes');
 const authRoutes = require('./routes/auth.routes');
 const homeRoute = require(`./routes/home.routes`)
@@ -38,7 +40,7 @@ app.use('/', homeRoute)
 app.use('/api/auth', authRoutes);
 app.use('/api/books', authMiddleware, bookRoutes);
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // 404 Handler
 app.use(notFound);
