@@ -33,7 +33,9 @@ export const useFormSubmit = <T extends Record<string, any>>(submitUrl: string) 
       if (data.token) localStorage.setItem('token', data.token);
 
       router.push('/'); // ! Redirect link
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       setApiError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);

@@ -12,7 +12,7 @@ export default function RegisterPage() {
   });
 
   const { validateForm } = useFormValidation();
-  const { handleSubmit, isLoading, apiError } = useFormSubmit('http://localhost:5000/api/auth/register');
+  const { handleSubmit, isLoading, apiError } = useFormSubmit('https://back-end-api-34k5.onrender.com/api/auth/register');
   const [showPassword, setShowPassword] = useState(false);
 
 
