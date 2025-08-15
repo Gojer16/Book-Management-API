@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 type SubmitFn<T> = (formData: T) => Promise<void>;
 

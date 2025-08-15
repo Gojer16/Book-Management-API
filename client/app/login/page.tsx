@@ -3,13 +3,15 @@ import { useFormInput } from '../hooks/useInputChange';
 import { useFormValidation } from '../hooks/useFormValidation';
 import { useFormSubmit } from '../hooks/useFormSubmit';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function LoginPage() {
 
   const { formData, handleInputChange, errors, setErrors } = useFormInput({ email: '', password: '' });
   const { validateForm } = useFormValidation();
-  const { handleSubmit, isLoading, apiError } = useFormSubmit('/api/auth/login');
-
+  const { handleSubmit, isLoading, apiError } = useFormSubmit('http://localhost:5000/api/auth/login');
+  const [showPassword, setShowPassword] = useState(false);
+  
 
 
   return (
@@ -69,7 +71,7 @@ export default function LoginPage() {
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
                 required
                 value={formData.password}
@@ -82,10 +84,17 @@ export default function LoginPage() {
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
               )}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute mt-1 flex items-center text-sm text-gray-500"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-4">
             <div className="flex items-center">
               <input
                 id="remember-me"

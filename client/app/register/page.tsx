@@ -9,13 +9,11 @@ export default function RegisterPage() {
     const { formData, handleInputChange, errors, setErrors } = useFormInput({
     email: '',
     password: '',
-    confirmPassword: ''
   });
 
   const { validateForm } = useFormValidation();
-  const { handleSubmit, isLoading, apiError } = useFormSubmit('/api/auth/register');
+  const { handleSubmit, isLoading, apiError } = useFormSubmit('http://localhost:5000/api/auth/register');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
   return (
@@ -94,34 +92,6 @@ export default function RegisterPage() {
               </button>
             </div>
 
-            <div className='pt-2'>
-              <label htmlFor="confirmPassword" className="block  text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                autoComplete="new-password"
-                required
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
-                placeholder="Confirm your password"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
-              <button
-              type="button"
-              onClick={() => setShowConfirmPassword(prev => !prev)}
-              className="absolute flex items-center mt-1 text-gray-500 text-sm leading-5"
-              >
-              {showConfirmPassword ? 'Hide' : 'Show'}
-              </button>
-            </div>
             
           </div>
 

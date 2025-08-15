@@ -20,13 +20,11 @@ const app = express()
 app.use(express.json()) 
 app.use(helmet()); 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5137'], // **IMPORTANT: Replace with your actual frontend URL**
+    origin: ['http://localhost:3000', 'http://localhost:5137'], // !IMPORTANT: Replace with your actual frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
 
-
-console.log("DB_URI:", process.env.DB_URI); // Debugging line
 
 
 database(process.env.DB_URI)
