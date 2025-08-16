@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 /** 
 *@desc Create a book
 *@route POST /api/books
-*@access Public (or Private)
+*@access Private
 */
 exports.createBook = async (req, res, next) => {
     try {
@@ -20,7 +20,7 @@ exports.createBook = async (req, res, next) => {
 
 // @desc Get all books
 // @route GET /api/books
-// @access Public
+// @access Private
 exports.getBooks = async (req, res, next) => {
     try {
         const books = await Book.find();
@@ -34,7 +34,7 @@ exports.getBooks = async (req, res, next) => {
 
 // @desc Get a single book
 // @route GET /api/books/:id
-// @access Public
+// @access Private
 exports.getBookById = async (req, res, next) => {
     try {
         const book = await Book.findById(req.params.id);
@@ -53,7 +53,7 @@ exports.getBookById = async (req, res, next) => {
 
 // @desc Update a book
 // @route PUT /api/books/:id
-// @access Public (or Private)
+// @access Private
 exports.updateBook = async (req, res, next) => {
     try {
         const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -75,7 +75,7 @@ exports.updateBook = async (req, res, next) => {
 
 // @desc Delete a book
 // @route DELETE /api/books/:id
-// @access Public (or Private)
+// @access Private
 exports.deleteBook = async (req, res, next) => {
     try {
         const deletedBook = await Book.findByIdAndDelete(req.params.id);
@@ -90,6 +90,65 @@ exports.deleteBook = async (req, res, next) => {
         }
         next(err);
     }
+};
+
+
+// @desc search/filter/sort
+// @route GET /api/books/
+// @access Private
+exports.searchBooks = async (req, res, next) => {
+  try {
+    const {
+      title,
+      author,
+      genre,
+      tags,
+      publicationYear,
+      rating,
+      sort = 'title',
+      order = 'asc',
+      page = 1,
+      limit = 20
+    } = req.query;
+
+    let query = {};
+    if (title) query.title = { $regex: title, $options: 'i' };
+    if (author) query.author = { $regex: author, $options: 'i' };
+    if (genre) {
+    query.genre = { $regex: `^${genre.trim()}$`, $options: 'i' };
+    }
+    if (publicationYear) query.publicationYear = Number(publicationYear);
+    if (rating) query.rating = Number(rating);
+    // Tags
+    if (tags) {
+    const tagsArray = Array.isArray(tags) ? tags : tags.split(',').map(t => t.trim());
+
+    query.tags = { 
+    $elemMatch: { $regex: tagsArray.join('|'), $options: 'i' } 
+    };
+    }
+    // Pagination
+    const skip = (Number(page) - 1) * Number(limit);
+    // Sorting
+    const sortOrder = order === 'desc' ? -1 : 1;
+    const sortObj = { [sort]: sortOrder };
+
+    const books = await Book.find(query)
+      .sort(sortObj)
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Book.countDocuments(query);
+
+    res.json({
+      total,
+      page: Number(page),
+      totalPages: Math.ceil(total / limit),
+      results: books
+    });
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
 };
 
 module.exports 
