@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const mongoose = require('mongoose')
 
+
+
 const registerSchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'org', 'es', 'io', 'dev'] } }) 
@@ -51,7 +53,7 @@ const createBookSchema = Joi.object({
     'any.required': 'Title is required.'
   }),
   author: Joi.string().min(1).max(255)
-  .optional()
+  .required()
   .messages({
     'string.min': 'Author must not be empty.',
     'string.max': 'Author cannot exceed 255 characters.',
@@ -64,19 +66,38 @@ const createBookSchema = Joi.object({
       'number.integer': 'Publication year must be an integer.',
       'number.min': 'Publication year cannot be before 1000.',
       'number.max': `Publication year cannot be after ${new Date().getFullYear() + 5}.`,
-      'any.required': 'Publication year is required.'
     }),
   genre: Joi.string().min(1).max(100)
-  .optional()
+  .required()
   .messages({
     'string.min': 'Genre must not be empty if provided.',
     'string.max': 'Genre cannot exceed 100 characters.'
+  }),
+  tags: Joi.string()
+  .optional()
+  .messages({
+    'string.min': 'Tags must not be empty if provided.',
+    'string.max': 'Tags cannot exceed 100 characters.'
   }),
   description: Joi.string().max(1000)
   .optional()
   .messages({
     'string.max': 'Description cannot exceed 1000 characters.'
   }),
+  rating: Joi.number().min(0).max(10)
+  .optional()
+  .messages({
+    'number.base': 'Rating must be a number.',
+    'number.integer': 'Rating must be an integer.',
+    'number.min': 'Rating cannot be -1.',
+    'number.max': `Rating cannot be after 10. `
+  }),
+   isbn: Joi.string()
+    .pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'ISBN must be a valid 10 or 13 digit number (e.g., 9783161484100).'
+    }),
 });
 
 const updateBookSchema = Joi.object({
@@ -116,7 +137,49 @@ const updateBookSchema = Joi.object({
   .messages({
     'string.max': 'Description cannot exceed 1000 characters.'
   }),
+  tags: Joi.array().items(Joi.string().max(100))
+  .optional()
+  .messages({
+    'string.min': 'Rating must not be empty if provided.',
+    'string.max': 'Rating cannot exceed 100 characters.'
+  })
+  ,
+  rating: Joi.number().min(0).max(10)
+  .optional()
+  .messages({
+    'number.min': 'Rating must not be empty if provided.',
+    'number.max': 'Rating cannot exceed 100 characters.'
+  })
 });
+
+const searchBooksSchema = Joi.object({
+  title: Joi.string().min(1).max(255)
+  .optional(),
+  author: Joi.string().min(1).max(255)
+  .optional(),
+  genre: Joi.string().min(1).max(100)
+  .optional(),
+  tags: Joi.string()
+  .messages({
+  'string.pattern.base': 'Each tag must only contain letters, numbers, and spaces.',
+  'string.max': 'Each tag cannot exceed 100 characters.'
+  })
+  .optional(),
+  publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5)
+  .optional(),
+  rating: Joi.number().min(0).max(10)
+  .optional(),
+
+  //sorting & pagination
+  sort: Joi.string()
+  .valid('title', 'author', 'publicationYear', 'genre', 'rating') .default('title'),
+  order: Joi.string()
+  .valid('asc', 'desc').default('asc'),
+  page: Joi.number().integer().min(1).default(1),
+  limit: Joi.number().integer().min(1).max(100).default(20),
+});
+
+
 
 
 const idSchema = Joi.object({ 
@@ -155,6 +218,7 @@ module.exports = {
   loginSchema,
   createBookSchema,
   updateBookSchema,
+  searchBooksSchema,
   idSchema, 
   validate,
 };
