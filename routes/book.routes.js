@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bookController = require('../controllers/bookController');
-const { validate, createBookSchema, updateBookSchema, idSchema } = require('../middleware/validation');
+const { validate, createBookSchema, updateBookSchema, searchBooksSchema, idSchema } = require('../middleware/validation');
 
 /**
  * @swagger
@@ -112,10 +112,7 @@ router.post(
  *             schema:
  *               $ref: "#/components/schemas/Error"
  */
-router.get(
-    '/',
-    bookController.getBooks
-);
+
 
 /**
  * @swagger
@@ -311,5 +308,13 @@ router.delete(
     validate(idSchema, 'params'),
     bookController.deleteBook
 );
+
+
+router.get(
+    '/',
+    validate(searchBooksSchema, 'query'),
+    bookController.searchBooks
+);
+
 
 module.exports = router;
