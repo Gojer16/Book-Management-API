@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-type SubmitFn<T> = (formData: T) => Promise<void>;
-
-export const useFormSubmit = <T extends Record<string, any>>(submitUrl: string) => {
+export const useFormSubmit = <T extends Record<string, unknown>>(submitUrl: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const router = useRouter();

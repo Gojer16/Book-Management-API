@@ -1,5 +1,5 @@
 'use client';
-import React, {  useState } from 'react'
+import React from 'react'
 import "./page.css";
 import { useBooks } from '../hooks/useBooks';
 import { useForm } from '../hooks/useFormBooks';
@@ -7,7 +7,7 @@ import AddBook from './AddBook';
 import Books from './Books';
 
 
-const page = () => {
+const Page = () => {
     const { books, loading, error, addBook, deleteBook, editBook } = useBooks();
     const { formData: newBook, handleChange: handleInputChange, resetForm } = useForm({
     title: "",
@@ -42,4 +42,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 type Errors = { [key: string]: string };
 
-export const useFormInput = <T extends Record<string, any>>(initialState: T) => {
+export const useFormInput = <T extends Record<string, unknown>>(initialState: T) => {
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState<Errors>({});
 
