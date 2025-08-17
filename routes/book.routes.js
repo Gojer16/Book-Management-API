@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bookController = require('../controllers/bookController');
 const { validate, createBookSchema, updateBookSchema, searchBooksSchema, idSchema } = require('../middleware/validation');
+const upload = require('../middleware/upload');
 
 /**
  * @swagger
@@ -314,6 +315,12 @@ router.get(
     '/',
     validate(searchBooksSchema, 'query'),
     bookController.searchBooks
+);
+
+router.post(
+    '/:id/upload-cover', 
+    upload.single('cover'), 
+    bookController.uploadCover
 );
 
 
