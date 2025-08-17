@@ -5,7 +5,7 @@ import { genreColors } from '../constants/genreColors';
 
 interface AddBookProps {
   newBook: NewBook;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   addBookSubmit: () => void;
 }
 
