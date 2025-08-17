@@ -1,5 +1,8 @@
 const Book = require('../models/book'); 
 const mongoose = require('mongoose'); 
+const cloudinary = require('../config/cloudinary');
+const upload = require('../middleware/upload');
+const streamifier = require('streamifier');
 
 /** 
 *@desc Create a book
@@ -150,5 +153,46 @@ exports.searchBooks = async (req, res, next) => {
     return res.status(400).json({ message: err.message });
   }
 };
+
+exports.uploadCover = async (req, res, next) => {
+    try {
+        const bookId = req.params.id
+        if (!req.file) {
+            return res.status(400).json({
+                message: "No file uploaded."
+            })
+        }
+
+        const result = await cloudinary.uploader.upload_stream({
+            folder: 'book_covers',
+            width: 200,
+            height: 300,
+            crop: 'scale',
+        },
+
+        async (error, uploadResult) => {
+            if (error) return res.status(500).json({
+                message: error.message
+            })
+        const book = await Book.findByIdAndUpdate(
+            bookId,
+            {coverUrl: uploadResult.secure_url},
+            {new: true}
+        )
+
+        res.json({
+            message: "Cover uploaded successfully",
+            book
+        })})
+
+    streamifier.createReadStream(req.file.buffer).pipe(result)
+    } 
+    catch (error)
+     {
+    res.status(500).json({
+        message: error.message
+    })    
+    }
+}
 
 module.exports 
