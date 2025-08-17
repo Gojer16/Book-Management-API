@@ -22,6 +22,8 @@ dotenv.config()
 const app = express()
 
 if (process.env.TRUST_PROXY) app.set('trust proxy', Number(process.env.TRUST_PROXY));
+const allowedOrigins = process.env.FRONTEND_ORIGIN?.split(",").map(o => o.trim()) || [];
+
 
 app.use(helmet({
     crossOriginEmbedderPolicy: false,
@@ -29,7 +31,7 @@ app.use(helmet({
       useDefaults: true,
       directives: {
         "default-src": ["'self'"],
-        "connect-src": ["'self'", process.env.FRONTEND_ORIGIN],
+        "connect-src": ["'self'", ...allowedOrigins],
         "img-src": ["'self'", "data:", "blob:", "*.cloudinary.com"],
         "style-src": ["'self'", "'unsafe-inline'"],
         "script-src": ["'self'"],
@@ -38,10 +40,16 @@ app.use(helmet({
   })
 );
 
-
-app.use(cors({
-    origin: process.env.FRONTEND_ORIGIN, 
-    credentials: true, 
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     maxAge: 600, 
