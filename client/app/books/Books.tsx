@@ -1,13 +1,13 @@
 'use client';
 import GenreBadge from './GenreBadge';
 import React, { useState } from 'react';
-import { Book } from '../hooks/useBooks';
+import { Book, NewBook } from '../hooks/useBooks';
 import { useForm } from '../hooks/useFormBooks';
 
 interface BooksProps {
   books: Book[];
   deleteBook: (id: string) => Promise<void>;
-  editBook: (id: string, updatedBook: Book) => Promise<void>;
+  editBook: (id: string, updatedBook: NewBook) => Promise<void>;
 }
 
 const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook }) => {
