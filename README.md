@@ -2,36 +2,35 @@
 
 A robust and well-documented RESTful API for managing book collections, including user authentication. Built with **Node.js**, **Express**, and **MongoDB**.
 
----
-
 ## 🚀 Features
 
 * **User Authentication**
-
   * Secure user registration and login with JSON Web Tokens (JWT).
 
 * **Book Management**
-
   * Create new book entries.
   * Retrieve lists of all books.
   * Fetch specific book details by ID.
   * Update existing book information.
   * Delete book records.
 
-* **Robust Validation**
+* **Advanced Search**
+  * Query books by **title**, **author**, or **tags**.
+  * **Fuzzy search** (basic regex matching).
+  * Filter by **year** and **genre**.
+  * Sort results by **title**, **publication year**, or **rating**.
+  * Built-in **pagination** for large datasets.
 
+* **Robust Validation**
   * Utilizes Joi for comprehensive input validation on all API requests.
 
 * **Centralized Error Handling**
-
   * Consistent and informative error responses for a better developer experience.
 
 * **API Documentation**
-
   * Interactive API documentation powered by Swagger UI (OpenAPI 3.0).
 
 * **Containerized Deployment**
-
   * Dockerfile included for easy containerization and deployment.
 
 ---
