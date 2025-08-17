@@ -45,7 +45,7 @@ export const useBooks = () => {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch books");
-      setBooks(data);
+      setBooks(Array.isArray(data.results) ? data.results : []);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Something went wrong";
       setError(errorMessage);
