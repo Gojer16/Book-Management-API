@@ -30,7 +30,7 @@ export const useFormSubmit = <T extends Record<string, unknown>>(submitUrl: stri
 
       if (data.token) localStorage.setItem('token', data.token);
 
-      router.push('/'); // ! Redirect link
+      router.push('/books'); // ! Redirect link
     } 
     catch (error) 
     {
