@@ -46,8 +46,9 @@ export const useBooks = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch books");
       setBooks(data);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -74,8 +75,9 @@ export const useBooks = () => {
       if (!res.ok) throw new Error(createdBook.message || "Failed to create book");
 
       setBooks((prev) => [...prev, createdBook]);
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to create book";
+      alert(errorMessage);
     }
   };
 
@@ -100,8 +102,9 @@ export const useBooks = () => {
       }
 
       setBooks((prev) => prev.filter((book) => book._id !== id));
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to delete book";
+      alert(errorMessage);
     }
   };
 
@@ -128,8 +131,9 @@ export const useBooks = () => {
       setBooks((prev) =>
         prev.map((book) => (book._id === id ? updatedBook : book))
       );
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to update book";
+      alert(errorMessage);
     }
   };
 
