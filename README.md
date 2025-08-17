@@ -22,20 +22,20 @@ A robust and well-documented RESTful API for managing book collections, includin
   * Built-in **pagination** for large datasets.
 
 * **Media Handling**
- * Upload book cover images.
- * API endpoint: POST /books/:id/upload-cover.
- * Store files in Cloudinary (easily extendable to AWS S3 or Supabase).
- * Save the generated image URL in the database for frontend display.
- * thumbnails for faster UI rendering.
- * (Planned for later) PDF preview support — serve sample pages from uploaded PDFs.
+  * Upload book cover images.
+  * API endpoint: POST /books/:id/upload-cover.
+  * Store files in Cloudinary.
+  * Save the generated image URL in the database for frontend display.
+  * thumbnails for faster UI rendering.
+  * (Planned for later) PDF preview support — serve sample pages from uploaded PDFs.
 
 * **Security Layer**
- * Helmet — sets secure HTTP headers.
- * CORS restrictions — only allows requests from your front-end origins.
- * Rate limiting — prevents abuse (200 reqs / 15min per IP by default).
- * Input sanitization — protects against XSS, NoSQL injection, and SQL injection.
- * HPP (HTTP Parameter Pollution) protection with whitelisted fields (e.g., tags).
- * Disables the X-Powered-By header for additional security.
+  * Helmet — sets secure HTTP headers.
+  * CORS restrictions — only allows requests from your front-end origins.
+  * Rate limiting — prevents abuse (200 reqs / 15min per IP by default).
+  * Input sanitization — protects against XSS, NoSQL injection, and SQL injection.
+  * HPP (HTTP Parameter Pollution) protection with whitelisted fields (e.g., tags).
+  * Disables the X-Powered-By header for additional security.
 
 * **Robust Validation**
   * Utilizes Joi for comprehensive input validation on all API requests.
