@@ -46,6 +46,8 @@ const Book = mongoose.models.Book || mongoose.model('Book', new mongoose.Schema(
     sparse: true,
     match: [/^(97(8|9))?\d{9}(\d|X)$/, 'ISBN must be a valid 10 or 13 digit number.']
   },
+  coverUrl: { type: String },
+  
 }, { timestamps: true }));
 
 module.exports = Book;
