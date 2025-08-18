@@ -158,7 +158,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                         name: 'tags',
                         value: tags
                       }
-                    } as any;
+                    } as unknown as React.ChangeEvent<HTMLInputElement>;
                     handleInputChange(customEvent);
                   } else {
                     const customEvent = {
@@ -166,7 +166,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                         name: 'tags',
                         value: []
                       }
-                    } as any;
+                    } as unknown as React.ChangeEvent<HTMLInputElement>;
                     handleInputChange(customEvent);
                   }
                 }}
