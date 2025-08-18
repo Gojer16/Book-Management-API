@@ -55,6 +55,10 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook }) => {
                 {book.publicationYear && <span className="book-card__year">{book.publicationYear}</span>}
                 {book.genre && <GenreBadge genre={book.genre} />}
                 {book.description && <p className="book-card__description">{book.description}</p>}
+                {book.tags && <p className="book-card__tags">{book.tags.join(', ')}</p>}
+                {book.rating && <p className="book-card__rating">Rating: {book.rating}</p>}
+                {book.coverUrl && <img src={book.coverUrl} alt={`${book.title} cover`} className="book-card__cover" />}
+                {book.isbn && <p className="book-card__isbn">ISBN: {book.isbn}</p>}
               </div>
               <div className="book-card__actions">
                 <button
