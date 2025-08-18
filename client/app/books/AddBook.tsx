@@ -57,9 +57,9 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
 
     const result = await addBookSubmit();
     
-    if (selectedFile && result && result._id) {
-      try {
-        const coverUrl = await uploadImage(selectedFile, result._id);
+      if (selectedFile && result && result._id) {
+        try {
+          await uploadImage(selectedFile, result._id);
         if (onBookCreated) {
           await onBookCreated(result._id);
         }
