@@ -59,7 +59,7 @@ const createBookSchema = Joi.object({
     'string.max': 'Author cannot exceed 255 characters.',
     'any.required': 'Author is required.'
   }),
-  publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5) 
+  publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5).allow('')
     .optional()
     .messages({
       'number.base': 'Publication year must be a number.',
@@ -73,13 +73,13 @@ const createBookSchema = Joi.object({
     'string.min': 'Genre must not be empty if provided.',
     'string.max': 'Genre cannot exceed 100 characters.'
   }),
-  tags: Joi.string()
+  tags: Joi.array().items(Joi.string())
   .optional()
   .messages({
     'string.min': 'Tags must not be empty if provided.',
     'string.max': 'Tags cannot exceed 100 characters.'
   }),
-  description: Joi.string().max(1000)
+  description: Joi.string().max(1000).allow('')
   .optional()
   .messages({
     'string.max': 'Description cannot exceed 1000 characters.'
@@ -93,10 +93,18 @@ const createBookSchema = Joi.object({
     'number.max': `Rating cannot be after 10. `
   }),
    isbn: Joi.string()
+    .allow('')
     .pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/)
     .optional()
     .messages({
       'string.pattern.base': 'ISBN must be a valid 10 or 13 digit number (e.g., 9783161484100).'
+    }),
+   coverUrl: Joi.string()
+    .allow('')
+    .uri()
+    .optional()
+    .messages({
+      'string.uri': 'Cover URL must be a valid URL.'
     }),
 });
 
@@ -169,8 +177,6 @@ const searchBooksSchema = Joi.object({
   .optional(),
   rating: Joi.number().min(0).max(10)
   .optional(),
-
-  //sorting & pagination
   sort: Joi.string()
   .valid('title', 'author', 'publicationYear', 'genre', 'rating') .default('title'),
   order: Joi.string()
