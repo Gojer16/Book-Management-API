@@ -27,6 +27,7 @@ const GridIcon = ({ active }: { active: boolean }) => (
 const LayoutToggle: React.FC<LayoutToggleProps> = ({ value, onChange }) => {
   const isList = value === 'list';
   const isGrid = value === 'grid';
+  
   return (
     <div className="layout-toggle" role="group" aria-label="Toggle layout">
       <button
