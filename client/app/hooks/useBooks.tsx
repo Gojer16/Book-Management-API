@@ -1,22 +1,29 @@
 import { useState, useEffect } from "react";
 
-
 export interface Book {
   _id: string;
   title: string;
-  author?: string;
+  author: string;
   publicationYear?: number;
-  genre?: string;
+  genre: string;
   description?: string;
   message?: string;
+  tags?: string[];
+  rating?: number;
+  coverUrl?: string;
+  isbn?: string;
 }
 
 export interface NewBook {
   title: string;
-  author?: string;
+  author: string;
   publicationYear?: string | number;
-  genre?: string;
+  genre: string;
   description?: string;
+  tags?: string[];
+  rating?: number;
+  coverUrl?: string;
+  isbn?: string;
 }
 
 export const useBooks = () => {
@@ -34,7 +41,7 @@ export const useBooks = () => {
 
     try {
       const res = await fetch(
-        "https://back-end-api-34k5.onrender.com/api/books",
+        "http://localhost:5000/api/books",
         {
           headers: {
             "Content-Type": "application/json",
@@ -44,30 +51,47 @@ export const useBooks = () => {
       );
 
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.message || "Failed to fetch books");
       setBooks(Array.isArray(data.results) ? data.results : []);
-    } catch (err: unknown) {
+
+    } 
+    catch (err: unknown) 
+    {
       const errorMessage = err instanceof Error ? err.message : "Something went wrong";
       setError(errorMessage);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };
 
-  const addBook = async (newBook: NewBook) => {
+  const addBook = async (newBook: NewBook): Promise<Book | null> => {
     const token = localStorage.getItem("token");
-    if (!token) return alert("You must be logged in");
+    if (!token) {
+      alert("You must be logged in");
+      return null;
+    }
 
     try {
+      const cleanedBook = { ...newBook };
+      
+      if (cleanedBook.isbn === '') delete cleanedBook.isbn;
+      if (cleanedBook.coverUrl === '') delete cleanedBook.coverUrl;
+      if (cleanedBook.description === '') delete cleanedBook.description;
+      if (cleanedBook.publicationYear === '') delete cleanedBook.publicationYear;
+      if (cleanedBook.tags && cleanedBook.tags.length === 0) delete cleanedBook.tags;
+      if (cleanedBook.rating === undefined) delete cleanedBook.rating;
+
       const res = await fetch(
-        "https://back-end-api-34k5.onrender.com/api/books",
+        "http://localhost:5000/api/books",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(newBook),
+          body: JSON.stringify(cleanedBook),
         }
       );
 
@@ -75,9 +99,14 @@ export const useBooks = () => {
       if (!res.ok) throw new Error(createdBook.message || "Failed to create book");
 
       setBooks((prev) => [...prev, createdBook]);
-    } catch (err: unknown) {
+      return createdBook;
+
+    } 
+    catch (err: unknown) 
+    {
       const errorMessage = err instanceof Error ? err.message : "Failed to create book";
       alert(errorMessage);
+      return null;
     }
   };
 
@@ -87,7 +116,7 @@ export const useBooks = () => {
 
     try {
       const res = await fetch(
-        `https://back-end-api-34k5.onrender.com/api/books/${id}`,
+        `http://localhost:5000/api/books/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -114,7 +143,7 @@ export const useBooks = () => {
 
     try {
       const res = await fetch(
-        `https://back-end-api-34k5.onrender.com/api/books/${id}`,
+        `http://localhost:5000/api/books/${id}`,
         {
           method: "PUT",
           headers: {
