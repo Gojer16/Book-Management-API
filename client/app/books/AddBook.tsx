@@ -1,17 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { NewBook } from '../hooks/useBooks';
+import { NewBook, Book } from '../hooks/useBooks';
 import { useImageUpload } from '../hooks/useImageHander';
 import "./addBook.css";
 import { genreColors } from '../constants/genreColors';
+import Image from 'next/image';
 
 interface AddBookProps {
   newBook: NewBook;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  addBookSubmit: () => Promise<any>;
+  addBookSubmit: () => Promise<Book | null>;
   onBookCreated?: (bookId: string) => void;
 }
 
-const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSubmit, onBookCreated }) => {
+const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSubmit}) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [tagsInput, setTagsInput] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -212,7 +213,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                 
                 {previewUrl ? (
                   <div className="image-preview">
-                    <img src={previewUrl} alt="Preview" />
+                    <Image src={previewUrl} alt="Preview" />
                     <button 
                       type="button" 
                       onClick={handleRemoveImage}
