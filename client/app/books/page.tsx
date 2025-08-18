@@ -1,8 +1,9 @@
 'use client';
-import React from 'react'
+import React, { useState } from 'react'
 import "./page.css";
 import { useBooks } from '../hooks/useBooks';
 import { useForm } from '../hooks/useFormBooks';
+import { useImageUpload } from '../hooks/useImageHander';
 import AddBook from './AddBook';
 import Books from './Books';
 
@@ -15,7 +16,13 @@ const Page = () => {
     publicationYear: "",
     genre: "",
     description: "",
+    tags: [],
+    rating: undefined,
+    coverUrl: undefined,
+    isbn: undefined,
   });
+  const [pendingImageUpload, setPendingImageUpload] = useState<{ file: File, bookId: string } | null>(null);
+  const { uploadImage } = useImageUpload();
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -34,8 +41,10 @@ const Page = () => {
         newBook={newBook}
         handleInputChange={handleInputChange}
         addBookSubmit={async () => {
-        await addBook(newBook);
-        resetForm();}}
+          const result = await addBook(newBook);
+          resetForm();
+          return result;
+        }}
         />
       </main>
     </>
