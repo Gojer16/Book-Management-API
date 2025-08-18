@@ -27,7 +27,6 @@ const SortToggle: React.FC<SortToggleProps> = ({ onChange }) => {
         onChange={(e) => {
           const next = e.target.value as SortKey;
           setSort(next);
-          // Sensible defaults: A–Z asc, newest desc, rating desc
           if (next === 'title') {
             setOrder('asc');
           } else {
@@ -41,7 +40,7 @@ const SortToggle: React.FC<SortToggleProps> = ({ onChange }) => {
         <option value="rating">Rating</option>
       </select>
       <button type="button" onClick={() => setOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))} className="sort-toggle__order">
-        {order === 'asc' ? 'Asc' : 'Desc'}
+        {order === 'asc' ? 'Asc' : 'Desc'} 
       </button>
     </div>
   );
