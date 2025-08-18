@@ -1,14 +1,20 @@
 'use client';
-import React from 'react'
+import React, { useState } from 'react'
 import "./page.css";
-import { useBooks } from '../hooks/useBooks';
+import { SearchParams, useBooks } from '../hooks/useBooks';
 import { useForm } from '../hooks/useFormBooks';
 import AddBook from './AddBook';
-import Books from './Books';
+import SearchBar from './SearchBar';
+import Filters from './Filters';
+import SortToggle from './SortToggle';
+import LayoutToggle from './LayoutToggle';
+import BookList from './BookList';
 
 
 const Page = () => {
-    const { books, loading, error, addBook, deleteBook, editBook } = useBooks();
+    const { books, loading, error, addBook, deleteBook, editBook, fetchBooks, searchBooks } = useBooks();
+    const [layout, setLayout] = useState<'list' | 'grid'>('list');
+    const [query, setQuery] = useState<SearchParams>({});
     const { formData: newBook, handleChange: handleInputChange, resetForm } = useForm({
     title: "",
     author: "",
@@ -29,10 +35,52 @@ const Page = () => {
     <> 
       <main className="book-manager">
         <h1 className="book-manager__title">My Books</h1>
-        <Books 
-        books={books} 
-        deleteBook={deleteBook} 
-        editBook={editBook} 
+        <div className="book-manager__toolbar">
+          <SearchBar onSearch={(q) => {
+            setQuery((prev) => {
+              const next: SearchParams = {
+                ...prev,
+                title: q.title?.trim() || undefined,
+                author: q.author?.trim() || undefined,
+                tags: q.tags?.trim() || undefined,
+              };
+              searchBooks(next);
+              return next;
+            });
+          }} 
+          />
+          <Filters onChange={(f) => {
+            setQuery((prev) => {
+              const next: SearchParams = {
+                ...prev,
+                genre: f.genre || undefined,
+                publicationYear: f.publicationYear || undefined,
+              };
+              searchBooks(next);
+              return next;
+            });
+          }} 
+          />
+          <SortToggle onChange={(s) => {
+            setQuery((prev) => {
+              const next: SearchParams = {
+                ...prev,
+                sort: s.sort,
+                order: s.order,
+              };
+              searchBooks(next);
+              return next;
+            });
+          }} 
+          />
+          <LayoutToggle value={layout} onChange={setLayout} />
+        </div>
+        <BookList 
+          books={books} 
+          deleteBook={deleteBook} 
+          editBook={editBook}
+          fetchBooks={fetchBooks}
+          layout={layout}
         />
         <AddBook
         newBook={newBook}
@@ -41,6 +89,9 @@ const Page = () => {
           const result = await addBook(newBook);
           resetForm();
           return result;
+        }}
+        onBookCreated={async () => {
+          await fetchBooks();
         }}
         />
       </main>
