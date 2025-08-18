@@ -26,6 +26,17 @@ export interface NewBook {
   isbn?: string;
 }
 
+export interface SearchParams {
+  title?: string;
+  author?: string;
+  tags?: string;
+  genre?: string;
+  publicationYear?: string | number;
+  sort?: string;
+  order?: 'asc' | 'desc';
+  rating?: number;
+}
+
 export const useBooks = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,6 +58,7 @@ export const useBooks = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+          cache: 'no-store',
         }
       );
 
@@ -63,6 +75,48 @@ export const useBooks = () => {
     } 
     finally {
       setLoading(false);
+    }
+  };
+
+  const searchBooks = async (params: SearchParams) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("You must be logged in to view books.");
+      return;
+    }
+
+    try {
+      const query = new URLSearchParams();
+      if (params.title) query.set('title', params.title);
+      if (params.author) query.set('author', params.author);
+      if (params.tags) query.set('tags', params.tags);
+      if (params.genre) query.set('genre', params.genre);
+      if (params.publicationYear !== undefined && params.publicationYear !== null && params.publicationYear !== '') {
+        query.set('publicationYear', String(params.publicationYear));
+      }
+      if (params.sort) query.set('sort', params.sort);
+      if (params.order) query.set('order', params.order);
+      if (params.rating !== undefined) query.set('rating', String(params.rating));
+
+      const res = await fetch(
+        `http://localhost:5000/api/books?${query.toString()}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-store',
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Failed to search books");
+      
+      setBooks(Array.isArray(data.results) ? data.results : []);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong";
+      setError(errorMessage);
     }
   };
 
@@ -142,6 +196,14 @@ export const useBooks = () => {
     if (!token) return alert("You must be logged in");
 
     try {
+      const cleanedData: any = { ...updatedData };
+      if (cleanedData.isbn === '') delete cleanedData.isbn;
+      if (cleanedData.coverUrl === '') delete cleanedData.coverUrl;
+      if (cleanedData.description === '') delete cleanedData.description;
+      if (cleanedData.publicationYear === '') delete cleanedData.publicationYear;
+      if (Array.isArray(cleanedData.tags) && cleanedData.tags.length === 0) delete cleanedData.tags;
+      if (cleanedData.rating === undefined || cleanedData.rating === '') delete cleanedData.rating;
+
       const res = await fetch(
         `http://localhost:5000/api/books/${id}`,
         {
@@ -150,7 +212,7 @@ export const useBooks = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updatedData),
+          body: JSON.stringify(cleanedData),
         }
       );
 
@@ -170,5 +232,5 @@ export const useBooks = () => {
     fetchBooks();
   }, []);
 
-  return { books, loading, error, fetchBooks, addBook, deleteBook, editBook };
+  return { books, loading, error, fetchBooks, searchBooks, addBook, deleteBook, editBook };
 };
