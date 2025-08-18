@@ -4,6 +4,7 @@ import { useImageUpload } from '../hooks/useImageHander';
 import "./addBook.css";
 import { genreColors } from '../constants/genreColors';
 import Image from 'next/image';
+ 
 
 interface AddBookProps {
   newBook: NewBook;
@@ -12,7 +13,7 @@ interface AddBookProps {
   onBookCreated?: (bookId: string) => void;
 }
 
-const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSubmit}) => {
+const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSubmit, onBookCreated }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [tagsInput, setTagsInput] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -58,11 +59,18 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
     
     if (selectedFile && result && result._id) {
       try {
-        await uploadImage(selectedFile, result._id);
+        const coverUrl = await uploadImage(selectedFile, result._id);
+        if (onBookCreated) {
+          await onBookCreated(result._id);
+        }
         setSelectedFile(null);
         setPreviewUrl('');
       } catch (error) {
         console.error('Failed to upload image:', error);
+      }
+    } else if (result && result._id) {
+      if (onBookCreated) {
+        await onBookCreated(result._id);
       }
     }
     
@@ -110,7 +118,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                   type="number"
                   id="publicationYear"
                   name="publicationYear"
-                  value={newBook.publicationYear}
+                  value={newBook.publicationYear ?? ''}
                   placeholder="Publication Year"
                   onChange={handleInputChange}
                 />
@@ -133,7 +141,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
               <textarea
                 id="description"
                 name="description"
-                value={newBook.description}
+                value={newBook.description ?? ''}
                 placeholder="Description"
                 onChange={handleInputChange}
               />
@@ -185,7 +193,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                 min="1"
                 max="10"
                 step="0.1"
-                value={newBook.rating}
+                value={newBook.rating ?? ''}
                 placeholder="Rating (1-10)"
                 onChange={handleInputChange}
               />
@@ -195,7 +203,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                 type="text"
                 id="isbn"
                 name="isbn"
-                value={newBook.isbn}
+                value={newBook.isbn ?? ''}
                 placeholder="ISBN"
                 onChange={handleInputChange}
               />
@@ -213,7 +221,7 @@ const AddBook: React.FC<AddBookProps> = ({ newBook, handleInputChange, addBookSu
                 
                 {previewUrl ? (
                   <div className="image-preview">
-                    <Image src={previewUrl} alt="Preview" />
+                    <Image src={previewUrl} alt="Preview" width={160} height={224} unoptimized />
                     <button 
                       type="button" 
                       onClick={handleRemoveImage}
