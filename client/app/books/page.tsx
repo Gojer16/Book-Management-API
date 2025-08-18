@@ -9,6 +9,7 @@ import Filters from './Filters';
 import SortToggle from './SortToggle';
 import LayoutToggle from './LayoutToggle';
 import BookList from './BookList';
+import Link from 'next/link';
 
 
 const Page = () => {
@@ -28,7 +29,11 @@ const Page = () => {
   });
 
   if (loading) return <p>Loading books...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}
+    <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+      Login Up!
+    </Link>
+  </p>;
 
 
   return (
