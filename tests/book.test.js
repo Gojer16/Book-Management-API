@@ -228,7 +228,7 @@ describe('Book Integration', () => {
         .post('/api/books/invalidid/upload-cover')
         .set('Authorization', `Bearer ${token}`)
         .attach('cover', Buffer.from([0xff, 0xd8, 0xff]), 'cover.jpg');
-      expect([400, 500]).toContain(res.status); // 400 if validation, 500 if controller error
+      expect([400, 500]).toContain(res.status); 
     });
 
     it('should return 404 if book not found', async () => {
