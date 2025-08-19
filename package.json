@@ -3,7 +3,8 @@
   "version": "1.2.0",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test&& jest --detectOpenHandles --forceExit",
+    "test": "set NODE_ENV=test&& jest --detectOpenHandles --forceExit --passWithNoTests",
+    "lint": "eslint .",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
