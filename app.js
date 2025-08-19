@@ -87,10 +87,6 @@ const authLimiter = rateLimit({
 
 app.use('/api/auth/login', authLimiter);
 
-database(process.env.DB_URI)
-    .then(() => console.log('Connected to MongoDB ✅'))
-    .catch(err => console.error(`Connection to MongoDB failed ❌: ${err.message}`));
-
 //routes
 //route for book
 app.use('/', homeRoute)
@@ -106,7 +102,5 @@ app.use(notFound);
 // Error Handler
 app.use(errorHandler);
 
-const port = process.env.PORT || 4000 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-})
+module.exports = app;
+
