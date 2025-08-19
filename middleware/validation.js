@@ -93,11 +93,10 @@ const createBookSchema = Joi.object({
     'number.max': `Rating cannot be after 10. `
   }),
    isbn: Joi.string()
-    .allow('')
-    .pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/)
+    .pattern(/^(97(8|9))?\d{9}(\d|X)$/)
     .optional()
     .messages({
-      'string.pattern.base': 'ISBN must be a valid 10 or 13 digit number (e.g., 9783161484100).'
+      'string.pattern.base': 'ISBN must be a valid 10 or 13 digit number.'
     }),
    coverUrl: Joi.string()
     .allow('')
@@ -121,11 +120,12 @@ const updateBookSchema = Joi.object({
     'string.min': 'Author must not be empty.',
     'string.max': 'Author cannot exceed 255 characters.'
   }),
-  isbn: Joi.string().pattern(/^(?:ISBN(?:-13)?:?)(?=[0-9]{13}$)([0-9]{3}-){2}[0-9]{3}[0-9X]$/)
-  .optional()
-  .messages({
-    'string.pattern.base': 'ISBN must be a valid 13-digit ISBN (e.g., 978-3-16-148410-0).'
-  }),
+  isbn: Joi.string()
+    .pattern(/^(97(8|9))?\d{9}(\d|X)$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'ISBN must be a valid 10 or 13 digit number.'
+    }),
   publicationYear: Joi.number().integer().min(1000).max(new Date().getFullYear() + 5)
   .optional()
   .messages({
