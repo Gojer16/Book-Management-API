@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "set NODE_ENV=test&& jest --detectOpenHandles --forceExit",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -28,6 +28,7 @@
     "mongodb": "^6.17.0",
     "mongoose": "^8.15.2",
     "multer": "^2.0.2",
+    "node-mocks-http": "^1.17.2",
     "streamifier": "^0.1.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
