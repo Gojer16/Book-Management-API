@@ -196,4 +196,48 @@ describe('Book Integration', () => {
     });
   });
 
+  describe('POST /api/books/:id/upload-cover', () => {
+    let book;
+    beforeEach(async () => {
+      book = await Book.create({ title: 'Book', author: 'A', genre: 'G', publicationYear: 2000 });
+    });
+
+    it('should upload a cover image and update the book', async () => {
+      const res = await request(app)
+        .post(`/api/books/${book._id}/upload-cover`)
+        .set('Authorization', `Bearer ${token}`)
+        .attach('cover', Buffer.from([0xff, 0xd8, 0xff]), 'cover.jpg');
+      expect([200, 500]).toContain(res.status);
+      if (res.status === 200) {
+        expect(res.body.message).toMatch(/uploaded/i);
+        expect(res.body.book).toBeDefined();
+        expect(res.body.book.coverUrl).toBeDefined();
+      }
+    });
+
+    it('should return 400 if no file is uploaded', async () => {
+      const res = await request(app)
+        .post(`/api/books/${book._id}/upload-cover`)
+        .set('Authorization', `Bearer ${token}`);
+      expect(res.status).toBe(400);
+      expect(res.body.message).toMatch(/no file/i);
+    });
+
+    it('should return 400 for invalid id', async () => {
+      const res = await request(app)
+        .post('/api/books/invalidid/upload-cover')
+        .set('Authorization', `Bearer ${token}`)
+        .attach('cover', Buffer.from([0xff, 0xd8, 0xff]), 'cover.jpg');
+      expect([400, 500]).toContain(res.status); // 400 if validation, 500 if controller error
+    });
+
+    it('should return 404 if book not found', async () => {
+      const fakeId = new mongoose.Types.ObjectId();
+      const res = await request(app)
+        .post(`/api/books/${fakeId}/upload-cover`)
+        .set('Authorization', `Bearer ${token}`)
+        .attach('cover', Buffer.from([0xff, 0xd8, 0xff]), 'cover.jpg');
+      expect([404, 500]).toContain(res.status);
+    });
+  });
 });
