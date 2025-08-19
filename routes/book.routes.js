@@ -28,7 +28,7 @@ const upload = require('../middleware/upload');
  *             required:
  *               - title
  *               - author
- *               - publicationYear
+ *               - genre
  *             properties:
  *               title:
  *                 type: string
