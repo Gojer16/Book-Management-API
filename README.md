@@ -1,6 +1,6 @@
-# 📚 Book Management App
+# 📚 Librora
 
-A full-stack web application for managing book collections with authentication, CRUD operations, and advanced search/filtering. Built with Node.js, Express, MongoDB, and a modern frontend.
+A full-stack web application for managing book collections with authentication, CRUD operations, and advanced search/filtering. Built with Node.js, Express, MongoDB, and Next.js.
 
 ## 🚀 Features
 
@@ -64,14 +64,14 @@ A full-stack web application for managing book collections with authentication, 
 
 ## 🛠️ Technologies Used
 
-  * Backend: Node.js, Express.js, MongoDB, Mongoose
-  * Auth: JWT, Bcrypt.js
-  * Validation: Joi
-  * Testing: Jest, Supertest
-  * CI/CD: GitHub Actions
-  * Docs: Swagger UI
-  * Frontend: Next.js, Framer motion
-  * Deployment: Docker
+  * Backend: Node.js, Express.js, MongoDB, Mongoose.
+  * Auth: JWT, Bcrypt.js.
+  * Validation: Joi.
+  * Testing: Jest, Supertest.
+  * CI/CD: GitHub Actions.
+  * Docs: Swagger UI.
+  * Frontend: Next.js, Framer Motion.
+  * Deployment: Docker, Render, Vercel.
 
 ---
 
