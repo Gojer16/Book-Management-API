@@ -1,11 +1,12 @@
-# 📚 Book Management API
+# 📚 Book Management App
 
-A robust and well-documented RESTful API for managing book collections, including user authentication. Built with **Node.js**, **Express**, and **MongoDB**.
+A full-stack web application for managing book collections with authentication, CRUD operations, and advanced search/filtering. Built with Node.js, Express, MongoDB, and a modern frontend.
 
 ## 🚀 Features
 
 * **User Authentication**
   * Secure user registration and login with JSON Web Tokens (JWT).
+  * Authentication-based access control for protected routes.
 
 * **Book Management**
   * Create new book entries.
@@ -27,7 +28,6 @@ A robust and well-documented RESTful API for managing book collections, includin
   * Store files in Cloudinary.
   * Save the generated image URL in the database for frontend display.
   * thumbnails for faster UI rendering.
-  * (Planned for later) PDF preview support — serve sample pages from uploaded PDFs.
 
 * **Security Layer**
   * Helmet — sets secure HTTP headers.
@@ -36,6 +36,23 @@ A robust and well-documented RESTful API for managing book collections, includin
   * Input sanitization — protects against XSS, NoSQL injection, and SQL injection.
   * HPP (HTTP Parameter Pollution) protection with whitelisted fields (e.g., tags).
   * Disables the X-Powered-By header for additional security.
+
+Frontend
+
+Ugly non-responsive UI.
+
+Search bar, dropdown filters, and sort toggle integrated with backend API.
+
+CRUD interface to manage books directly from the app.
+
+Testing & CI
+
+Integration tests covering API endpoints (users, books, routes).
+
+Automated test suite using Jest + Supertest.
+
+GitHub Actions pipeline for linting and running tests on every push.
+
 
 * **Robust Validation**
   * Utilizes Joi for comprehensive input validation on all API requests.
@@ -53,15 +70,14 @@ A robust and well-documented RESTful API for managing book collections, includin
 
 ## 🛠️ Technologies Used
 
-* **Node.js** – JavaScript runtime environment
-* **Express.js** – Fast, minimalist web framework
-* **MongoDB** – Flexible NoSQL database
-* **JWT** – Authentication with JSON Web Tokens
-* **Bcrypt.js** – Password hashing
-* **Joi** – Input validation
-* **Dotenv** – Environment variable management
-* **Swagger-jsdoc & Swagger-ui-express** – API documentation
-* **Nodemon** – Development tool for auto-restarting server
+Backend: Node.js, Express.js, MongoDB, Mongoose
+Auth: JWT, Bcrypt.js
+Validation: Joi
+Testing: Jest, Supertest
+CI/CD: GitHub Actions
+Docs: Swagger UI
+Frontend: Next.js, Framer motion
+Deployment: Docker
 
 ---
 
