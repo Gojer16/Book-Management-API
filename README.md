@@ -102,7 +102,7 @@ cd Book-Management-API
 npm install
 ```
 
-⚙️ Environment Setup
+### ⚙️ Environment Setup
 
 Create a .env file and add:
 
@@ -115,13 +115,13 @@ Generate a strong JWT_SECRET with:
 
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
-▶️ Running the API
+### ▶️ Running the API
 
 npm start
 
 Visit the API at: http://localhost:4000 Swagger Docs: http://localhost:4000/api-docs
 
-🐳 Docker Setup (Optional)
+### 🐳 Docker Setup (Optional)
 
 Build Docker Image
 
@@ -133,7 +133,7 @@ docker run -p 4000:4000 -d --name book-api-container book-management-api
 
 Make sure .env variables (especially MONGO_URI) are accessible in the container.
 
-🚀 Deployment
+### 🚀 Deployment
 
 This API is deployed on Render:
 
@@ -141,19 +141,19 @@ Live Endpoint: https://back-end-api-34k5.onrender.com/
 
 Swagger Docs: https://back-end-api-34k5.onrender.com/api-docs
 
-🤝 Contributing
+### 🤝 Contributing
 
 Pull requests are welcome! If you find bugs or have suggestions, please open an issue.
 
-📝 License
+### 📝 License
 
-Licensed under the MIT License. See LICENSE file for details.
+Licensed under the MIT License. See [LICENSE](./LICENSE) file for details.  
 
-📞 Contact
+### 📞 Contact
 
 Orlando Ascanio
-📧 operation927@gmail.com
-🔗 [LinkedIn] (https://www.linkedin.com/in/orlando-ascanio-dev)
-🔗 [Project Link] (https://github.com/Gojer16/Book-Management-API)
+📧 [operation927@gmail.com](mailto:operation927@gmail.com)  
+🔗 [LinkedIn](https://www.linkedin.com/in/orlando-ascanio-dev)  
+🔗 [Project Link](https://github.com/Gojer16/Book-Management-API)
 
 
