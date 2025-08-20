@@ -21,7 +21,9 @@ const UserSchema = new mongoose.Schema({
   type: String,
   enum: ['Admin', 'Reader', 'User'],
   default: 'User'
-},}, 
+},
+refreshTokens: [String],
+}, 
 { timestamps: true });
 
 // Hash password before saving
