@@ -16,8 +16,13 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     minlength: [8, 'Password must be at least 8 characters'],
     select: false
-  }
-}, { timestamps: true });
+  },
+  role: {
+  type: String,
+  enum: ['Admin', 'Reader', 'User'],
+  default: 'User'
+},}, 
+{ timestamps: true });
 
 // Hash password before saving
 UserSchema.pre('save', async function (next) {
