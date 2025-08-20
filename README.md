@@ -106,20 +106,33 @@ npm install
 
 Create a .env file and add:
 
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRES_IN=1h
-PORT=4000
+  * DB_URI=your_mongodb_connection_string
+  * JWT_SECRET=your_jwt_secret_key
+  * JWT_EXPIRES_IN=1h
+  * PORT=4000
+  * CLOUDINARY_API_KEY
+  * CLOUDINARY_API_SECRET
+  * CLOUDINARY_CLOUD_NAME
+  * FRONTEND_ORIGIN
+  * NODE_ENV
+  * RATE_LIMIT_MAX
+  * RATE_LIMIT_WINDOW_MS
+  * TRUST_PROXY
 
 Generate a strong JWT_SECRET with:
 
+```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+---
 
 ### ▶️ Running the API
-
+```bash
 npm start
-
+```
 Visit the API at: http://localhost:4000 Swagger Docs: http://localhost:4000/api-docs
+
+---
 
 ### 🐳 Docker Setup (Optional)
 
@@ -131,7 +144,9 @@ Run Docker Container
 
 docker run -p 4000:4000 -d --name book-api-container book-management-api
 
-Make sure .env variables (especially MONGO_URI) are accessible in the container.
+Make sure .env variables (especially DB_URI) are accessible in the container.
+
+---
 
 ### 🚀 Deployment
 
@@ -141,13 +156,19 @@ Live Endpoint: https://back-end-api-34k5.onrender.com/
 
 Swagger Docs: https://back-end-api-34k5.onrender.com/api-docs
 
+---
+
 ### 🤝 Contributing
 
 Pull requests are welcome! If you find bugs or have suggestions, please open an issue.
 
+---
+
 ### 📝 License
 
 Licensed under the MIT License. See [LICENSE](./LICENSE) file for details.  
+
+---
 
 ### 📞 Contact
 
@@ -155,5 +176,3 @@ Orlando Ascanio
 📧 [operation927@gmail.com](mailto:operation927@gmail.com)  
 🔗 [LinkedIn](https://www.linkedin.com/in/orlando-ascanio-dev)  
 🔗 [Project Link](https://github.com/Gojer16/Book-Management-API)
-
-
