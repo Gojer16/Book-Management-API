@@ -153,7 +153,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
 Orlando Ascanio
 📧 operation927@gmail.com
-🔗 LinkedIn (https://www.linkedin.com/in/orlando-ascanio-dev)
-🔗 Project Link (https://github.com/Gojer16/Book-Management-API)
+🔗 [LinkedIn] (https://www.linkedin.com/in/orlando-ascanio-dev)
+🔗 [Project Link] (https://github.com/Gojer16/Book-Management-API)
 
 
