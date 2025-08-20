@@ -37,22 +37,16 @@ A full-stack web application for managing book collections with authentication, 
   * HPP (HTTP Parameter Pollution) protection with whitelisted fields (e.g., tags).
   * Disables the X-Powered-By header for additional security.
 
-Frontend
+* **Frontend**
+  * Ugly non-responsive UI.
+  * Search bar, dropdown filters, and sort toggle integrated with backend API.
+  * CRUD interface to manage books directly from the app.
 
-Ugly non-responsive UI.
+* **Testing & CI**
 
-Search bar, dropdown filters, and sort toggle integrated with backend API.
-
-CRUD interface to manage books directly from the app.
-
-Testing & CI
-
-Integration tests covering API endpoints (users, books, routes).
-
-Automated test suite using Jest + Supertest.
-
-GitHub Actions pipeline for linting and running tests on every push.
-
+  * Integration tests covering API endpoints (users, books, routes).
+  * Automated test suite using Jest + Supertest.
+  * GitHub Actions pipeline for linting and running tests on every push.
 
 * **Robust Validation**
   * Utilizes Joi for comprehensive input validation on all API requests.
@@ -159,7 +153,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
 Orlando Ascanio
 📧 operation927@gmail.com
-🔗 LinkedIn(https://www.linkedin.com/in/orlando-ascanio-dev)
+🔗 LinkedIn (https://www.linkedin.com/in/orlando-ascanio-dev)
 🔗 Project Link (https://github.com/Gojer16/Book-Management-API)
 
 
