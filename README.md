@@ -1,6 +1,6 @@
 # 📚 Librora
 
-A full-stack web application for managing book collections with authentication, CRUD operations, and advanced search/filtering. Built with Node.js, Express, MongoDB, and Next.js.
+A SaaS-style book management platform that combines a global catalog with personal libraries and reading analytics.
 
 ## 🚀 Features
 
