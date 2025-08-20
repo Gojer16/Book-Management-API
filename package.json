@@ -5,8 +5,8 @@
   "scripts": {
     "test": "set NODE_ENV=test&& jest --detectOpenHandles --forceExit --passWithNoTests",
     "lint": "eslint .",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
