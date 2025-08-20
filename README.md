@@ -97,8 +97,8 @@ Follow these steps to get a copy of the project up and running locally.
 ### 🔧 Installation
 
 ```bash
-git clone https://github.com/Gojer16/Book-Management-API.git
-cd Book-Management-API
+git clone https://github.com/Gojer16/Book-Management-App
+cd Book-Management-App
 npm install
 ```
 
