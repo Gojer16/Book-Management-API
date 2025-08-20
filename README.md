@@ -64,14 +64,14 @@ A full-stack web application for managing book collections with authentication, 
 
 ## 🛠️ Technologies Used
 
-Backend: Node.js, Express.js, MongoDB, Mongoose
-Auth: JWT, Bcrypt.js
-Validation: Joi
-Testing: Jest, Supertest
-CI/CD: GitHub Actions
-Docs: Swagger UI
-Frontend: Next.js, Framer motion
-Deployment: Docker
+  * Backend: Node.js, Express.js, MongoDB, Mongoose
+  * Auth: JWT, Bcrypt.js
+  * Validation: Joi
+  * Testing: Jest, Supertest
+  * CI/CD: GitHub Actions
+  * Docs: Swagger UI
+  * Frontend: Next.js, Framer motion
+  * Deployment: Docker
 
 ---
 
