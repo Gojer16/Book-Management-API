@@ -7,22 +7,20 @@ describe('Auth Integration', () => {
 	beforeAll(async () => {
 		await mongoose.connection.db.dropDatabase();
 	});
-	afterAll(async () => {
-		await mongoose.connection.close();
-	});
 	beforeEach(async () => {
 		await User.deleteMany({});
 	});
 
+
 	describe('POST /api/auth/register', () => {
-		it('should register a new user and return a token', async () => {
-			const res = await request(app)
-				.post('/api/auth/register')
-				.send({ email: 'newuser@example.com', password: 'Password123!' });
-			expect(res.status).toBe(201);
-			expect(res.body.token).toBeDefined();
-			expect(res.body.success).toBe(true);
-		});
+		   it('should register a new user and return a token', async () => {
+			   const res = await request(app)
+				   .post('/api/auth/register')
+				   .send({ email: 'newuser@example.com', password: 'Password123!' });
+			   expect(res.status).toBe(201);
+			   expect(res.body.accessToken).toBeDefined();
+			   expect(res.body.success).toBe(true);
+		   });
 		it('should not register with duplicate email', async () => {
 			await User.create({ email: 'dupe@example.com', password: 'Password123!' });
 			const res = await request(app)
@@ -50,14 +48,14 @@ describe('Auth Integration', () => {
 				.post('/api/auth/register')
 				.send({ email: 'loginuser@example.com', password: 'Password123!' });
 		});
-		it('should login with correct credentials', async () => {
-			const res = await request(app)
-				.post('/api/auth/login')
-				.send({ email: 'loginuser@example.com', password: 'Password123!' });
-			expect(res.status).toBe(200);
-			expect(res.body.token).toBeDefined();
-			expect(res.body.success).toBe(true);
-		});
+		   it('should login with correct credentials', async () => {
+			   const res = await request(app)
+				   .post('/api/auth/login')
+				   .send({ email: 'loginuser@example.com', password: 'Password123!' });
+			   expect(res.status).toBe(200);
+			   expect(res.body.accessToken).toBeDefined();
+			   expect(res.body.success).toBe(true);
+		   });
 		it('should not login with wrong password', async () => {
 			const res = await request(app)
 				.post('/api/auth/login')
@@ -78,4 +76,60 @@ describe('Auth Integration', () => {
 		});
 	});
 });
+
+
+	describe('POST /api/auth/refresh', () => {
+		   let cookies;
+		   beforeEach(async () => {
+			   await request(app)
+				   .post('/api/auth/register')
+				   .send({ email: 'refreshuser@example.com', password: 'Password123!' });
+			   const loginRes = await request(app)
+				   .post('/api/auth/login')
+				   .send({ email: 'refreshuser@example.com', password: 'Password123!' });
+			   cookies = loginRes.headers['set-cookie'];
+		   });
+
+		   it('should refresh the token with a valid refresh token (cookie)', async () => {
+			   const res = await request(app)
+				   .post('/api/auth/refresh')
+				   .set('Cookie', cookies);
+			   expect(res.status).toBe(200);
+			   expect(res.body.accessToken).toBeDefined();
+			   expect(res.body.success).toBe(true);
+		   });
+
+		   it('should not refresh with missing refresh token', async () => {
+			   const res = await request(app)
+				   .post('/api/auth/refresh');
+			   expect([401, 403]).toContain(res.status);
+		   });
+	});
+
+	describe('POST /api/auth/logout', () => {
+		   let cookies;
+		   beforeEach(async () => {
+			   await request(app)
+				   .post('/api/auth/register')
+				   .send({ email: 'logoutuser@example.com', password: 'Password123!' });
+			   const loginRes = await request(app)
+				   .post('/api/auth/login')
+				   .send({ email: 'logoutuser@example.com', password: 'Password123!' });
+			   cookies = loginRes.headers['set-cookie'];
+		   });
+		   it('should logout with a valid refresh token (cookie)', async () => {
+			   const res = await request(app)
+				   .post('/api/auth/logout')
+				   .set('Cookie', cookies);
+			   expect(res.status).toBe(200);
+			   expect(res.body.success).toBe(true);
+			   expect(res.body.message).toMatch(/logged out/i);
+		   });
+		   it('should not logout with missing refresh token', async () => {
+			   const res = await request(app)
+				   .post('/api/auth/logout');
+			   expect(res.status).toBe(200);
+			   expect(res.body.success).toBe(true);
+		   });
+	});
 
