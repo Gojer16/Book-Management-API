@@ -1,25 +1,32 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const Book = require('../models/book');
-const User = require('../models/User');
 const app = require('../app');
 
-describe('Book Integration', () => {
+describe("Book Integration", () => {
   let token;
+
   beforeAll(async () => {
     await mongoose.connection.db.dropDatabase();
+    await User.syncIndexes();
     try {
-      await request(app).post('/api/auth/register').send({ email: 'test@example.com', password: 'Password123!' });
-    } catch (e) {}
-    const res = await request(app).post('/api/auth/login').send({ email: 'test@example.com', password: 'Password123!' });
+      await request(app).post("/api/auth/register").send({
+        email: "test@example.com",
+        password: "Password123!",
+      });
+    } catch {}
+
+    const res = await request(app).post("/api/auth/login").send({
+      email: "test@example.com",
+      password: "Password123!",
+    });
     token = res.body.token;
   });
+
   beforeEach(async () => {
     await Book.deleteMany({});
   });
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
+
 
   describe('POST /api/books', () => {
     it('should create a new book', async () => {
@@ -237,7 +244,7 @@ describe('Book Integration', () => {
         .post(`/api/books/${fakeId}/upload-cover`)
         .set('Authorization', `Bearer ${token}`)
         .attach('cover', Buffer.from([0xff, 0xd8, 0xff]), 'cover.jpg');
-      expect([404, 500]).toContain(res.status);
+      expect(res.status).toBe(404);
     });
   });
 });
