@@ -3,6 +3,17 @@ import GenreBadge from './GenreBadge';
 import React, { useRef, useState } from 'react';
 import { Book, NewBook } from '../hooks/useBooks';
 import { useForm } from '../hooks/useFormBooks';
+
+type EditBookFormData = {
+  title: string;
+  author: string;
+  publicationYear: string;
+  genre: string;
+  description: string;
+  tags?: string[];
+  rating?: number;
+  isbn?: string;
+};
 import Image from 'next/image';
 import { useImageUpload } from '../hooks/useImageHander';
 
@@ -14,13 +25,17 @@ interface BooksProps {
   layout?: 'list' | 'grid';
 }
 
-const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, layout = 'list' }) => {
+const Books: React.FC<BooksProps> = (props: BooksProps) => {
+  const { books, deleteBook, editBook, fetchBooks, layout = 'list' } = props;
   const { formData: editingBookData, handleChange: handleEditChange, setFormData: setEditingBookData } = useForm({
     title: '',
     author: '',
     publicationYear: '',
     genre: '',
     description: '',
+    tags: [],
+    rating: undefined,
+    isbn: '',
   });
 
   const [editingBookId, setEditingBookId] = useState<string | null>(null);
@@ -75,7 +90,7 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, 
 
   return (
     <ul className={`book-manager__list ${layout === 'grid' ? 'book-manager__list--grid' : 'book-manager__list--list'}`}>
-      {books.map((book) => (
+  {books.map((book: Book) => (
         <li key={book._id} className="book-card">
           {editingBookId === book._id ? (
             <div className="book-card__edit-form">
@@ -92,17 +107,17 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, 
                 name="tags"
                 value={tagsInput}
                 placeholder="Tags (comma separated)"
-                onChange={(e) => setTagsInput(e.target.value)}
-                onBlur={(e) => {
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTagsInput(e.target.value)}
+                onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                   const inputValue = e.target.value.trim();
                   if (inputValue) {
-                    const tags = inputValue.split(',').map(tag => tag.trim()).filter(tag => tag);
+                    const tags = inputValue.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag);
                     const customEvent = {
                       target: {
                         name: 'tags',
                         value: tags
                       }
-                    } as unknown as React.ChangeEvent<HTMLInputElement>;
+                    } as React.ChangeEvent<HTMLInputElement>;
                     handleEditChange(customEvent);
                   } else {
                     const customEvent = {
@@ -110,13 +125,13 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, 
                         name: 'tags',
                         value: []
                       }
-                    } as unknown as React.ChangeEvent<HTMLInputElement>;
+                    } as React.ChangeEvent<HTMLInputElement>;
                     handleEditChange(customEvent);
                   }
                 }}
                 onFocus={() => {
-                  if (Array.isArray((editingBookData as any).tags) && (editingBookData as any).tags.length > 0) {
-                    setTagsInput(((editingBookData as any).tags as string[]).join(', '));
+                  if (Array.isArray(editingBookData.tags) && editingBookData.tags.length > 0) {
+                    setTagsInput(editingBookData.tags.join(', '));
                   }
                 }}
                 className="book-card__input"
@@ -130,7 +145,7 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, 
                 min="1"
                 max="10"
                 step="0.1"
-                value={(editingBookData as any).rating ?? ''}
+                value={editingBookData.rating ?? ''}
                 placeholder="Rating (1-10)"
                 onChange={handleEditChange}
                 className="book-card__input"
@@ -141,7 +156,7 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, 
                 type="text"
                 id="edit-isbn"
                 name="isbn"
-                value={(editingBookData as any).isbn ?? ''}
+                value={editingBookData.isbn ?? ''}
                 placeholder="ISBN"
                 onChange={handleEditChange}
                 className="book-card__input"
@@ -220,7 +235,7 @@ const Books: React.FC<BooksProps> = ({ books, deleteBook, editBook, fetchBooks, 
                       genre: book.genre || '',
                       description: book.description || '',
                       tags: book.tags || [],
-                      rating: book.rating as any,
+                      rating: book.rating,
                       isbn: book.isbn || '',
                     });
                     setSelectedFile(null);

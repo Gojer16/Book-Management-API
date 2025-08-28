@@ -196,13 +196,13 @@ export const useBooks = () => {
     if (!token) return alert("You must be logged in");
 
     try {
-      const cleanedData: any = { ...updatedData };
+  const cleanedData: Partial<NewBook> = { ...updatedData };
       if (cleanedData.isbn === '') delete cleanedData.isbn;
       if (cleanedData.coverUrl === '') delete cleanedData.coverUrl;
       if (cleanedData.description === '') delete cleanedData.description;
       if (cleanedData.publicationYear === '') delete cleanedData.publicationYear;
       if (Array.isArray(cleanedData.tags) && cleanedData.tags.length === 0) delete cleanedData.tags;
-      if (cleanedData.rating === undefined || cleanedData.rating === '') delete cleanedData.rating;
+  if (cleanedData.rating === undefined) delete cleanedData.rating;
 
       const res = await fetch(
         `http://localhost:5000/api/books/${id}`,

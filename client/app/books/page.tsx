@@ -15,7 +15,7 @@ import Link from 'next/link';
 const Page = () => {
     const { books, loading, error, addBook, deleteBook, editBook, fetchBooks, searchBooks } = useBooks();
     const [layout, setLayout] = useState<'list' | 'grid'>('list');
-    const [query, setQuery] = useState<SearchParams>({});
+
     const { formData: newBook, handleChange: handleInputChange, resetForm } = useForm({
     title: "",
     author: "",
@@ -42,40 +42,28 @@ const Page = () => {
         <h1 className="book-manager__title">My Books</h1>
         <div className="book-manager__toolbar">
           <SearchBar onSearch={(q) => {
-            setQuery((prev) => {
-              const next: SearchParams = {
-                ...prev,
-                title: q.title?.trim() || undefined,
-                author: q.author?.trim() || undefined,
-                tags: q.tags?.trim() || undefined,
-              };
-              searchBooks(next);
-              return next;
-            });
+            const next: SearchParams = {
+              title: q.title?.trim() || undefined,
+              author: q.author?.trim() || undefined,
+              tags: q.tags?.trim() || undefined,
+            };
+            searchBooks(next);
           }} 
           />
           <Filters onChange={(f) => {
-            setQuery((prev) => {
-              const next: SearchParams = {
-                ...prev,
-                genre: f.genre || undefined,
-                publicationYear: f.publicationYear || undefined,
-              };
-              searchBooks(next);
-              return next;
-            });
+            const next: SearchParams = {
+              genre: f.genre || undefined,
+              publicationYear: f.publicationYear || undefined,
+            };
+            searchBooks(next);
           }} 
           />
           <SortToggle onChange={(s) => {
-            setQuery((prev) => {
-              const next: SearchParams = {
-                ...prev,
-                sort: s.sort,
-                order: s.order,
-              };
-              searchBooks(next);
-              return next;
-            });
+            const next: SearchParams = {
+              sort: s.sort,
+              order: s.order,
+            };
+            searchBooks(next);
           }} 
           />
           <LayoutToggle value={layout} onChange={setLayout} />
