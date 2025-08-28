@@ -112,21 +112,15 @@ const Books: React.FC<BooksProps> = (props: BooksProps) => {
                   const inputValue = e.target.value.trim();
                   if (inputValue) {
                     const tags = inputValue.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag);
-                    const customEvent = {
-                      target: {
-                        name: 'tags',
-                        value: tags
-                      }
-                    } as React.ChangeEvent<HTMLInputElement>;
-                    handleEditChange(customEvent);
+                    setEditingBookData({
+                      ...editingBookData,
+                      tags,
+                    });
                   } else {
-                    const customEvent = {
-                      target: {
-                        name: 'tags',
-                        value: []
-                      }
-                    } as React.ChangeEvent<HTMLInputElement>;
-                    handleEditChange(customEvent);
+                    setEditingBookData({
+                      ...editingBookData,
+                      tags: [],
+                    });
                   }
                 }}
                 onFocus={() => {
