@@ -13,6 +13,8 @@ const swaggerSpec = require('./config/swagger.config')
 const bookRoutes = require('./routes/book.routes');
 const authRoutes = require('./routes/auth.routes');
 const homeRoute = require(`./routes/home.routes`)
+const userLibraryRoutes = require("./routes/userLibrary.routes");
+const adminRoutes = require("./routes/admin.routes");
 const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
@@ -92,6 +94,8 @@ app.use('/api/auth/login', authLimiter);
 app.use('/', homeRoute)
 app.use('/api/auth', authRoutes);
 app.use('/api/books', authMiddleware, bookRoutes);
+app.use("/api/user-library", userLibraryRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.disable('x-powered-by');
 
