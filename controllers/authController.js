@@ -150,3 +150,19 @@ exports.logout = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getMe = async (req, res) => {
+  try {
+    // req.user is already set by authMiddleware
+    const user = await User.findById(req.user.id).select("-password"); 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error in /me:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
