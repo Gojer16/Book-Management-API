@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { validate, registerSchema, loginSchema } = require('../middleware/validation');
+const authMiddleware = require('../middleware/auth');
 
 /**
  * @swagger
@@ -88,7 +89,6 @@ router.post(
 
 router.post(
   '/refresh',
-
   authController.refresh
 );
 
@@ -97,6 +97,9 @@ router.post(
   authController.logout
 );
 
-
+router.get("/me", 
+  authMiddleware, 
+  authController.getMe
+);
 
 module.exports = router;
