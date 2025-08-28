@@ -3,6 +3,7 @@ const router = express.Router();
 const bookController = require('../controllers/bookController');
 const { validate, createBookSchema, updateBookSchema, searchBooksSchema, idSchema } = require('../middleware/validation');
 const upload = require('../middleware/upload');
+const authorizeRole = require("../middleware/authorizeRole");
 
 /**
  * @swagger
@@ -79,41 +80,10 @@ const upload = require('../middleware/upload');
  */
 router.post(
     '/',
+    authorizeRole('Admin'),
     validate(createBookSchema, 'body'),
     bookController.createBook
 );
-
-/**
- * @swagger
- * /books:
- *   get:
- *     summary: "Retrieve a list of all books"
- *     tags: ["Books"]
- *     security:
- *       - BearerAuth: []
- *     responses:
- *       200:
- *         description: "A list of books."
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Book"
- *       401:
- *         description: "Unauthorized, no token or invalid token"
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/UnauthorizedError"
- *       500:
- *         description: "Internal Server Error"
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/Error"
- */
-
 
 /**
  * @swagger
@@ -165,6 +135,7 @@ router.post(
  */
 router.get(
     '/:id',
+    authorizeRole('Admin', 'Reader', 'User'),
     validate(idSchema, 'params'),
     bookController.getBookById
 );
@@ -247,6 +218,7 @@ router.get(
  */
 router.put(
     '/:id',
+    authorizeRole('Admin'),
     validate(idSchema, 'params'),
     validate(updateBookSchema, 'body'),
     bookController.updateBook
@@ -306,6 +278,7 @@ router.put(
  */
 router.delete(
     '/:id',
+    authorizeRole('Admin'),
     validate(idSchema, 'params'),
     bookController.deleteBook
 );
@@ -313,13 +286,15 @@ router.delete(
 
 router.get(
     '/',
+    authorizeRole('Admin', 'Reader', 'User'),
     validate(searchBooksSchema, 'query'),
     bookController.searchBooks
 );
 
 router.post(
-    '/:id/upload-cover', 
-    upload.single('cover'), 
+    '/:id/upload-cover',
+    authorizeRole('Admin'),
+    upload.single('cover'),
     bookController.uploadCover
 );
 
